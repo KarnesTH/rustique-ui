@@ -2,5 +2,13 @@
 name = "rustique-ui"
 version = "0.1.0"
 edition = "2021"
+authors = ["KarnesTH", "Karnes Development"]
+description = "A modern, pure Rust GUI framework"
+license = "MIT"
+
+[[example]]
+name = "basic_window"
+path = "examples/basic_window.rs"
 
 [dependencies]
+gl = "0.14.0"
