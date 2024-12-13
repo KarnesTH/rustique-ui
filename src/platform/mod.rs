@@ -1,11 +1,14 @@
 pub mod x11;
 
+use crate::core::event::Event;
+use crate::core::Config;
+
 pub trait Window {
-    fn new(config: crate::core::Config) -> Self
+    fn new(config: Config) -> Self
     where
         Self: Sized;
     fn show(&self);
     fn hide(&self);
-    fn handle_events(&mut self) -> Vec<crate::core::event::Event>;
+    fn handle_events(&mut self) -> Vec<Event>;
     fn swap_buffers(&self);
 }
