@@ -32,6 +32,7 @@ extern "C" {
         protocols: *const u64,
         count: i32,
     ) -> i32;
+    pub fn XStoreName(display: *mut c_void, window: u64, window_name: *const i8) -> i32;
 }
 
 #[repr(C)]

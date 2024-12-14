@@ -1,9 +1,9 @@
 use event::{Event, WindowEvent};
-use rustique_ui::{platform::x11::window::X11Window, prelude::*};
+use rustique_ui::{core::render::Renderer, platform::x11::window::X11Window, prelude::*};
 
 fn main() {
     let config = Config {
-        title: "Basic Window".to_string(),
+        title: "Basic Test Window".to_string(),
         width: 800,
         height: 600,
     };
@@ -12,6 +12,7 @@ fn main() {
     window.show();
 
     'main: loop {
+        window.clear();
         let events = window.handle_events();
         for event in events {
             match event {

@@ -1,5 +1,7 @@
 use super::bindings::*;
 use super::events::EventHandler;
+use super::glx::GLXContext;
+use crate::core::render::Renderer;
 use crate::core::{event::Event, Config};
 use crate::platform::Window;
 use std::ffi::c_void;
@@ -9,6 +11,7 @@ pub struct X11Window {
     pub window: u64,
     pub config: Config,
     pub event_handler: EventHandler,
+    pub gl_context: GLXContext,
 }
 
 impl Window for X11Window {
@@ -36,6 +39,8 @@ impl Window for X11Window {
                 white,
             );
 
+            XStoreName(display, window, config.title.as_ptr() as *const i8);
+
             let wm_delete_window = XInternAtom(display, WM_DELETE_WINDOW.as_ptr() as *const i8, 0);
             XSetWMProtocols(display, window, &wm_delete_window, 1);
 
@@ -43,11 +48,17 @@ impl Window for X11Window {
 
             XFlush(display);
 
+            let gl_context = GLXContext::new(display, window);
+            gl_context.make_current();
+
+            gl::load_with(|s| super::glx::get_proc_address(s));
+
             Self {
                 display,
                 window,
                 config,
                 event_handler: EventHandler::new(display),
+                gl_context,
             }
         }
     }
@@ -79,9 +90,28 @@ impl Window for X11Window {
     }
 
     fn swap_buffers(&self) {
+        self.gl_context.swap_buffers();
+    }
+}
+
+impl Renderer for X11Window {
+    fn clear(&mut self) {
         unsafe {
-            XFlush(self.display);
+            gl::ClearColor(0.1, 0.1, 0.1, 1.0);
+            gl::Clear(gl::COLOR_BUFFER_BIT);
         }
+    }
+
+    fn present(&mut self) {
+        self.gl_context.swap_buffers();
+    }
+
+    fn draw_rect(&mut self, x: f32, y: f32, width: f32, height: f32) {
+        unimplemented!()
+    }
+
+    fn draw_text(&mut self, text: &str, x: f32, y: f32) {
+        unimplemented!()
     }
 }
 
