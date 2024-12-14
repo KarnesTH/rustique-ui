@@ -1,5 +1,5 @@
 use event::{Event, WindowEvent};
-use rustique_ui::{platform::x11::X11Window, prelude::*};
+use rustique_ui::{platform::x11::window::X11Window, prelude::*};
 
 fn main() {
     let config = Config {
