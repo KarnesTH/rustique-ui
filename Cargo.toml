@@ -14,4 +14,4 @@ name = "basic_window"
 path = "examples/basic_window.rs"
 
 [dependencies]
-gl = "0.14.0"
+wgpu = "23.0.1"
